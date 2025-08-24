@@ -1,5 +1,20 @@
 
 
+// Ensure fetch is available (Node.js 18+ compatibility)
+let fetch;
+if (typeof globalThis.fetch === 'undefined') {
+  try {
+    fetch = require('node-fetch');
+    console.log('📦 Using node-fetch polyfill');
+  } catch (e) {
+    console.error('❌ No fetch available and node-fetch not installed');
+    throw new Error('Fetch not available. Please install node-fetch or use Node.js 18+');
+  }
+} else {
+  fetch = globalThis.fetch;
+  console.log('✅ Using built-in fetch (Node.js 18+)');
+}
+
 // Simple in-memory cache to reduce external API calls
 const pokemonCache = new Map();
 const CACHE_DURATION = 1000 * 60 * 60; // 1 hour cache
@@ -213,11 +228,24 @@ async function fetchPokemons(category, user_input) {
     }
   } catch (error) {
     console.error('❌ Error fetching Pokémon:', error);
+    console.error('❌ Error type:', typeof error);
+    console.error('❌ Error constructor:', error.constructor.name);
+    console.error('❌ Error message:', error.message);
+    console.error('❌ Error stack:', error.stack);
     
     // Add retry logic for network issues
     if (error.message.includes('fetch') || error.message.includes('network')) {
       console.log('🔄 Network error detected, this might be due to Render free tier limits');
       console.log('💡 Consider upgrading to paid plan or implementing more aggressive caching');
+    }
+    
+    // Check for specific fetch-related errors
+    if (error.code === 'ENOTFOUND') {
+      console.log('🌐 DNS resolution failed - network connectivity issue');
+    } else if (error.code === 'ECONNREFUSED') {
+      console.log('🌐 Connection refused - Pokemon API might be blocking Render');
+    } else if (error.code === 'ETIMEDOUT') {
+      console.log('⏰ Request timeout - Pokemon API might be rate limiting');
     }
   } finally {
     // Clean up request tracking

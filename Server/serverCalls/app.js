@@ -668,6 +668,44 @@ app.get('/logInPageExplanation', requireAuth, (req, res) => {
     res.json({ welcomePageData: searchResults.welcomePageData });
 });
 
+// Test endpoint to verify Pokemon API connectivity
+app.get('/test-pokemon-api', async (req, res) => {
+    try {
+        console.log('🧪 Testing Pokemon API connectivity...');
+        
+        // Test a simple Pokemon API call
+        const testResponse = await fetch('https://pokeapi.co/api/v2/pokemon/1');
+        
+        if (!testResponse.ok) {
+            console.log(`❌ Pokemon API test failed: ${testResponse.status} ${testResponse.statusText}`);
+            return res.status(500).json({ 
+                error: 'Pokemon API test failed', 
+                status: testResponse.status,
+                statusText: testResponse.statusText
+            });
+        }
+        
+        const testData = await testResponse.json();
+        console.log(`✅ Pokemon API test successful: ${testData.name} (ID: ${testData.id})`);
+        
+        res.json({ 
+            success: true, 
+            message: 'Pokemon API is working',
+            testPokemon: testData.name,
+            timestamp: new Date().toISOString()
+        });
+        
+    } catch (error) {
+        console.error('❌ Pokemon API test error:', error);
+        res.status(500).json({ 
+            error: 'Pokemon API test failed', 
+            details: error.message,
+            type: error.constructor.name,
+            code: error.code
+        });
+    }
+});
+
 // Logout endpoint to remove user from online list
 app.post('/logout', requireAuth, (req, res) => {
     try {
