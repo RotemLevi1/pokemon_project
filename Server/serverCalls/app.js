@@ -652,8 +652,14 @@ app.get('/:id/:type/:ability', requireAuth, async (req, res) => {
 
     res.json({ allPokemons: arrayResults });
     } catch (error) {
-        console.error('Error fetching Pokemon data:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        console.error('❌ Error fetching Pokemon data:', error);
+        console.error('❌ Error message:', error.message);
+        console.error('❌ Error stack:', error.stack);
+        res.status(500).json({ 
+            error: 'Internal server error', 
+            details: error.message,
+            url: `/${req.params.id}/${req.params.type}/${req.params.ability}`
+        });
     }
 });
 

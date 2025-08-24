@@ -120,8 +120,18 @@ async function fetchPokemons(category, user_input) {
   const url = `https://pokeapi.co/api/v2/${category}/${user_input}`;
   let data = null;
   try {
+    console.log(`🌐 Fetching Pokemon data from: ${url}`);
     const response = await fetch(url);
+    
+    if (!response.ok) {
+      console.error(`❌ Pokemon API HTTP Error: ${response.status} ${response.statusText}`);
+      console.error(`❌ Failed URL: ${url}`);
+      throw new Error(`Pokemon API HTTP Error: ${response.status} ${response.statusText}`);
+    }
+    
+    console.log(`✅ Pokemon API response received (${response.status})`);
     data = await response.json();
+    console.log(`✅ Pokemon data parsed successfully for ${category}:${user_input}`);
     
     // If this is a Pokemon endpoint, ensure we have complete stats data
     if (category === 'pokemon' && data && data.stats) {
