@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const email = form.email.value.trim();
     const password = form.password.value;
     try {
-      const res = await fetch('http://localhost:3000/login', {
+      const res = await fetch('/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password })

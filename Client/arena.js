@@ -18,7 +18,7 @@ async function battleAgainstBot() {
     showLoading('Preparing battle against bot...');
     
     // Request bot battle from server
-    const response = await fetch('http://localhost:3000/battle-bot', {
+    const response = await fetch('/battle-bot', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include'
@@ -96,7 +96,7 @@ async function randomVsPlayer() {
     
     // Check if we have auth status
     try {
-      const authResponse = await fetch('http://localhost:3000/auth/status', {
+      const authResponse = await fetch('/auth/status', {
         credentials: 'include'
       });
       const authData = await authResponse.json();
@@ -108,7 +108,7 @@ async function randomVsPlayer() {
     // Send heartbeat to keep user active
     console.log('💓 Sending heartbeat...');
     try {
-      const heartbeatResponse = await fetch('http://localhost:3000/heartbeat', {
+      const heartbeatResponse = await fetch('/heartbeat', {
         method: 'GET',
         credentials: 'include'
       });
@@ -120,7 +120,7 @@ async function randomVsPlayer() {
     
     // Get online players
     console.log('👥 Fetching online players...');
-    const response = await fetch('http://localhost:3000/online-players', {
+    const response = await fetch('/online-players', {
       method: 'GET',
       credentials: 'include'
     });
@@ -211,7 +211,7 @@ async function challengePlayer(opponentId, opponentName) {
     showLoading(`Challenging ${opponentName}...`);
     
     // Send challenge
-    const response = await fetch('http://localhost:3000/challenge-player', {
+    const response = await fetch('/challenge-player', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -250,7 +250,7 @@ async function startBattle(battleId, opponentName) {
     hideLoading();
     
     // Get battle data (random Pokemon selection)
-    const response = await fetch(`http://localhost:3000/battle/${battleId}`, {
+    const response = await fetch(`/battle/${battleId}`, {
       credentials: 'include'
     });
     
@@ -397,7 +397,7 @@ async function showBattleResult(battleId) {
   try {
     console.log(`🔍 Fetching battle result for: ${battleId}`);
     
-    const response = await fetch(`http://localhost:3000/battle/${battleId}/result`, {
+    const response = await fetch(`/battle/${battleId}/result`, {
       credentials: 'include'
     });
     
@@ -482,7 +482,7 @@ function waitForOpponentResponse(battleId, opponentName) {
   // Poll for response
   const pollInterval = setInterval(async () => {
     try {
-      const response = await fetch(`http://localhost:3000/battle/${battleId}/status`, {
+      const response = await fetch(`/battle/${battleId}/status`, {
         credentials: 'include'
       });
       
@@ -516,7 +516,7 @@ function viewPlayerRanking() {
 async function getCurrentUserId() {
   try {
     // Get current user ID from auth status
-    const response = await fetch('http://localhost:3000/auth/status', {
+    const response = await fetch('/auth/status', {
       credentials: 'include'
     });
     
@@ -551,7 +551,7 @@ async function showBotBattleResult(battleId) {
   try {
     console.log(`🔍 Fetching bot battle result for: ${battleId}`);
 
-    const response = await fetch(`http://localhost:3000/battle-bot/${battleId}/result`, {
+    const response = await fetch(`/battle-bot/${battleId}/result`, {
       credentials: 'include'
     });
 
@@ -579,7 +579,7 @@ async function viewPlayerRanking() {
     
     showLoading('Loading player rankings...');
     
-    const response = await fetch('http://localhost:3000/player-ranking', {
+    const response = await fetch('/player-ranking', {
       credentials: 'include'
     });
     
@@ -717,7 +717,7 @@ async function viewBattleHistory() {
     
     showLoading('Loading battle history...');
     
-    const response = await fetch('http://localhost:3000/battle-history', {
+    const response = await fetch('/battle-history', {
       credentials: 'include'
     });
     
@@ -901,7 +901,7 @@ function hideLoading() {
 function startHeartbeat() {
   setInterval(async () => {
     try {
-      await fetch('http://localhost:3000/heartbeat', {
+      await fetch('/heartbeat', {
         method: 'GET',
         credentials: 'include'
       });

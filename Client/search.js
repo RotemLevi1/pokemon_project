@@ -90,7 +90,7 @@ function populateList(category, data) {
       // Get authenticated user from session
       let currentUser = null;
       try {
-        const authRes = await fetch('http://localhost:3000/auth/status');
+        const authRes = await fetch('/auth/status');
         if (authRes.ok) {
           const authData = await authRes.json();
           currentUser = authData.user;
@@ -103,7 +103,7 @@ function populateList(category, data) {
       window.userFavorites = {};
       if (currentUser) {
         try {
-          let favoritesRes = await fetch(`http://localhost:3000/${currentUser.name}/favorites`);
+          let favoritesRes = await fetch(`/${currentUser.name}/favorites`);
           if (favoritesRes.ok) {
             let favoritesData = await favoritesRes.json();
             window.userFavorites = favoritesData.favoritePokemons || [];
@@ -202,7 +202,7 @@ async function search_Npresent() {
       console.error('Error fetching pokemons:', error);
       return;
     }
-    const response = await fetch(`http://localhost:3000/${id}/${type}/${ability}`);
+    const response = await fetch(`/${id}/${type}/${ability}`);
     if (!response.ok) {
       removeLoading();
       showError(document.getElementById('resultsContainer'));
@@ -344,7 +344,7 @@ function showError(container) {
 async function addToFavorites(pokemon) {
   try {
     // Get authenticated user from session
-    const authRes = await fetch('http://localhost:3000/auth/status');
+    const authRes = await fetch('/auth/status');
     if (!authRes.ok) {
       alert('Authentication required!');
       return;
@@ -356,7 +356,7 @@ async function addToFavorites(pokemon) {
     }
     
     const user = authData.user.name;
-    fetch(`http://localhost:3000/${user}/addFavorite`, {
+    fetch(`/${user}/addFavorite`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ pokemon })

@@ -3,7 +3,7 @@
 // Check if user is authenticated
 async function checkAuthStatus() {
     try {
-        const response = await fetch('http://localhost:3000/auth/status');
+        const response = await fetch('/auth/status');
         const data = await response.json();
         return data;
     } catch (error) {
@@ -15,7 +15,7 @@ async function checkAuthStatus() {
 // Logout function
 async function logout() {
     try {
-        const response = await fetch('http://localhost:3000/logout', {
+        const response = await fetch('/logout', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
         });

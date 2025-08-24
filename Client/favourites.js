@@ -1,7 +1,7 @@
 window.addEventListener('DOMContentLoaded', async () => {
   try {
     // Get authenticated user from session
-    const authRes = await fetch('http://localhost:3000/auth/status');
+    const authRes = await fetch('/auth/status');
     if (!authRes.ok) {
       window.location.href = 'login.html';
       return;
@@ -26,7 +26,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     container.appendChild(loadingDiv);
 
     // Fetch favorites from backend
-    let favoritesRes = await fetch(`http://localhost:3000/${user}/favorites`);
+    let favoritesRes = await fetch(`/${user}/favorites`);
     let favoritesData = await favoritesRes.json();
     let favorites = favoritesData.favoritePokemons;
 
@@ -110,7 +110,7 @@ function createPokemonCard(pokemon, user) {
 async function removeFromFavorites(name) {
   try {
     // Get authenticated user from session
-    const authRes = await fetch('http://localhost:3000/auth/status');
+    const authRes = await fetch('/auth/status');
     if (!authRes.ok) {
       alert('Authentication required!');
       return;
@@ -122,7 +122,7 @@ async function removeFromFavorites(name) {
     }
     
     const user = authData.user.name;
-    fetch(`http://localhost:3000/${user}/removeFavorite?pokemonName=${encodeURIComponent(name)}`, {
+    fetch(`/${user}/removeFavorite?pokemonName=${encodeURIComponent(name)}`, {
       method: 'DELETE'
     })
     .then(res => res.json())

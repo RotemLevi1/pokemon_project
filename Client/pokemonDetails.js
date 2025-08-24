@@ -208,7 +208,7 @@ async function loadPokemonVideos(pokemonName) {
             videosContainer.innerHTML = '<div class="video-loading">Loading videos...</div>';
             
             // Make real API call to our server
-            const response = await fetch(`http://localhost:3000/youtube/${encodeURIComponent(pokemonName)}`);
+            const response = await fetch(`/youtube/${encodeURIComponent(pokemonName)}`);
             const data = await response.json();
             
             if (data.videos && data.videos.length > 0) {
@@ -238,7 +238,7 @@ async function displayVideos(videos) {
         // Fetch embed HTML for each video
         const videoPromises = videos.map(async (video) => {
             try {
-                const response = await fetch(`http://localhost:3000/embed?url=${encodeURIComponent(video.url)}`);
+                const response = await fetch(`/embed?url=${encodeURIComponent(video.url)}`);
                 if (!response.ok) {
                     throw new Error(`Failed to fetch embed for ${video.title}`);
                 }
