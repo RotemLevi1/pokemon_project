@@ -164,8 +164,9 @@ function backButton() {
 }
 
 function goToArena() {
-  // Navigate to the battle arena page
-  window.location.href = 'arena.html';
+  // Preserve search parameters when going to arena page
+  const currentSearch = window.location.search;
+  window.location.href = 'arena.html' + currentSearch;
 }
 
 
