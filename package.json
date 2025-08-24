@@ -1,0 +1,26 @@
+{
+  "name": "pokemon_project",
+  "version": "1.0.0",
+  "description": "A full-stack web application for searching, viewing, and managing Pokemon favorites with embedded YouTube videos and user authentication.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node Server/serverCalls/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RotemLevi1/pokemon_project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RotemLevi1/pokemon_project/issues"
+  },
+  "homepage": "https://github.com/RotemLevi1/pokemon_project#readme",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2"
+  }
+  }
