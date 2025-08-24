@@ -1,7 +1,7 @@
 {
   "name": "pokemon_project",
   "version": "1.0.0",
-  "description": "A full-stack web application for searching, viewing, and managing Pokemon favorites with embedded YouTube videos and user authentication.",
+  "description": "A full-stack web application for searching, viewing, and managing Pokemon favorites with embedded YouTube videos and user authentication. Updated for Render deployment.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
