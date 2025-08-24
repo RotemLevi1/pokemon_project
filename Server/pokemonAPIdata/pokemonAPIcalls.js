@@ -1,5 +1,40 @@
 
 
+// Simple in-memory cache to reduce external API calls
+const pokemonCache = new Map();
+const CACHE_DURATION = 1000 * 60 * 60; // 1 hour cache
+
+// Configuration for Render free tier limits
+const MAX_POKEMON_FETCH = process.env.MAX_POKEMON_FETCH || 1000; // Reduce from 100,000
+const ENABLE_CACHING = process.env.ENABLE_CACHING !== 'false'; // Enable by default
+
+// Request throttling to stay within Render free tier limits
+const requestQueue = [];
+const MAX_CONCURRENT_REQUESTS = 3; // Limit concurrent Pokemon API calls
+let activeRequests = 0;
+
+// Cache helper functions
+function getCachedData(key) {
+  if (!ENABLE_CACHING) return null;
+  
+  const cached = pokemonCache.get(key);
+  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+    console.log(`💾 Using cached data for: ${key}`);
+    return cached.data;
+  }
+  return null;
+}
+
+function setCachedData(key, data) {
+  if (!ENABLE_CACHING) return;
+  
+  pokemonCache.set(key, {
+    data: data,
+    timestamp: Date.now()
+  });
+  console.log(`💾 Cached data for: ${key}`);
+}
+
 async function getSearchResults(id, type, ability) {
   if (id !== "null") {
     var id_pokemon = await fetchPokemons('pokemon', id);
@@ -88,7 +123,7 @@ async function getSearchResultsCheck(id, type, ability){
 
 
 async function getAllPokemonIDs() {
-  const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=100000');
+  const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=10');
   const data = await response.json();
   const ids = data.results.map(p => {
     const parts = p.url.split('/');
@@ -117,10 +152,28 @@ async function loadAsyncDataUsingFetch(list_name, url) {
 
 async function fetchPokemons(category, user_input) {
   // this function returns a JSON object of the pokemon data
+  const cacheKey = `${category}:${user_input}`;
+  
+  // Check cache first
+  const cachedData = getCachedData(cacheKey);
+  if (cachedData) {
+    return cachedData;
+  }
+  
   const url = `https://pokeapi.co/api/v2/${category}/${user_input}`;
   let data = null;
+  
+  // Throttle requests to stay within Render free tier limits
+  if (activeRequests >= MAX_CONCURRENT_REQUESTS) {
+    console.log(`⏳ Request throttled (${activeRequests}/${MAX_CONCURRENT_REQUESTS} active), waiting...`);
+    await new Promise(resolve => {
+      requestQueue.push(resolve);
+    });
+  }
+  
+  activeRequests++;
   try {
-    console.log(`🌐 Fetching Pokemon data from: ${url}`);
+    console.log(`🌐 Fetching Pokemon data from: ${url} (${activeRequests}/${MAX_CONCURRENT_REQUESTS} active)`);
     const response = await fetch(url);
     
     if (!response.ok) {
@@ -132,6 +185,9 @@ async function fetchPokemons(category, user_input) {
     console.log(`✅ Pokemon API response received (${response.status})`);
     data = await response.json();
     console.log(`✅ Pokemon data parsed successfully for ${category}:${user_input}`);
+    
+    // Cache the successful response
+    setCachedData(cacheKey, data);
     
     // If this is a Pokemon endpoint, ensure we have complete stats data
     if (category === 'pokemon' && data && data.stats) {
@@ -156,7 +212,21 @@ async function fetchPokemons(category, user_input) {
       }
     }
   } catch (error) {
-    console.error('Error fetching Pokémon:', error);
+    console.error('❌ Error fetching Pokémon:', error);
+    
+    // Add retry logic for network issues
+    if (error.message.includes('fetch') || error.message.includes('network')) {
+      console.log('🔄 Network error detected, this might be due to Render free tier limits');
+      console.log('💡 Consider upgrading to paid plan or implementing more aggressive caching');
+    }
+  } finally {
+    // Clean up request tracking
+    activeRequests--;
+    if (requestQueue.length > 0) {
+      const nextRequest = requestQueue.shift();
+      nextRequest();
+    }
+    console.log(`📊 Request completed, ${activeRequests}/${MAX_CONCURRENT_REQUESTS} active`);
   }
 
   return data;
