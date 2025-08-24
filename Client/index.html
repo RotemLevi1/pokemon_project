@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pokemon Gallery - Home</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <script src="auth.js"></script>
+  
+  <!-- Navigation Bar -->
+  <nav style="background: linear-gradient(90deg,#ff5e5e 0%,#4fc3dc 100%); padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center;">
+    <div style="font-size: 1.5rem; font-weight: bold;">Pokémon Gallery</div>
+    <div>
+      <a href="login.html" style="background: rgba(255,255,255,0.2); border: 1px solid white; color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none; margin-right: 10px;">Login</a>
+      <a href="register.html" style="background: rgba(255,255,255,0.2); border: 1px solid white; color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none;">Register</a>
+    </div>
+  </nav>
+  
+  <div class="container" style="text-align: center; padding-top: 50px;">
+    <h1 style="color:#4fc3dc; font-size:3rem; font-weight:bold; margin-bottom:2rem;">Welcome to Pokémon Gallery</h1>
+    <p style="font-size:1.3rem; color:#666; margin-bottom:3rem;">Discover, search, and collect your favorite Pokémon!</p>
+    
+    <div id="authStatus" style="display: none;">
+      <p style="font-size:1.2rem; color:#4fc3dc; margin-bottom:1rem;">You are already logged in!</p>
+      <a href="search.html" class="search-btn" style="text-decoration: none; padding: 15px 30px;">Go to Gallery</a>
+    </div>
+  </div>
+  
+  <script>
+    // Check authentication status and redirect if already logged in
+    document.addEventListener('DOMContentLoaded', async () => {
+      const authStatus = await checkAuthStatus();
+      if (authStatus.authenticated) {
+        document.getElementById('authStatus').style.display = 'block';
+        // Auto-redirect after 3 seconds
+        setTimeout(() => {
+          window.location.href = 'search.html';
+        }, 3000);
+      }
+    });
+  </script>
+</body>
+</html>

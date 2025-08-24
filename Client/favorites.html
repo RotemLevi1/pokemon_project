@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Selected Favourites</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="pokemonDetails.css">
+</head>
+<body>
+  <script src="auth.js"></script>
+  <script src="pokemonDetails.js"></script>
+  <script src="favourites.js"></script>
+  
+  <!-- Navigation Bar -->
+  <nav style="background: linear-gradient(90deg,#ff5e5e 0%,#4fc3dc 100%); padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center;">
+    <div style="font-size: 1.5rem; font-weight: bold;">Pokémon Favorites</div>
+    <div>
+      <button id="navArenaBtn" style="background: rgba(255,255,255,0.2); border: 1px solid white; color: white; padding: 8px 16px; border-radius: 5px; margin-right: 15px; cursor: pointer;" onclick="goToArena()">Battle Arena</button>
+      <button id="navGalleryBtn" style="background: rgba(255,255,255,0.2); border: 1px solid white; color: white; padding: 8px 16px; border-radius: 5px; margin-right: 15px; cursor: pointer;" onclick="backButton()">Gallery</button>
+      <button id="navLogoutBtn" style="background: rgba(255,255,255,0.2); border: 1px solid white; color: white; padding: 8px 16px; border-radius: 5px; cursor: pointer;" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+  
+  <div class="container">
+    <h1 style="color:#ff5e5e; font-size:2.2rem; font-weight:bold; margin-bottom:2rem;">Selected Favorites</h1>
+    
+    <div style="display: flex; justify-content: center; gap: 24px; margin-bottom: 24px;">
+      <button id="downloadBtn" class="search-btn" onclick="downloadFavorites()">Download Favorites</button>
+    </div>
+
+    <div>
+      <select onchange="sortPokemonTable(this.value)" class="select-bar" style="min-width: 250px; height: 35px; font-size: 1rem; font-weight: 400;">
+        <option value="name">Sort by Name</option>
+        <option value="id">Sort by ID</option>
+        <option value="baseExp">Sort by Base Experience</option>
+      </select>
+    </div>
+  </div>
+
+   
+
+  <div id="resultsContainer" class="results-container"></div>
+  
+  <script>
+    // Initialize authentication
+    document.addEventListener('DOMContentLoaded', async () => {
+      await initAuth();
+    });
+  </script>
+</body>
+</html>

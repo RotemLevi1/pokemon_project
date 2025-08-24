@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pokemon Gallery</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="pokemonDetails.css">
+</head>
+<body>
+  <script src="auth.js"></script>
+  <script src="pokemonDetails.js"></script>
+  <script src="search.js"></script>
+  
+  <!-- Navigation Bar -->
+  <nav style="background: linear-gradient(90deg,#ff5e5e 0%,#4fc3dc 100%); padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center;">
+    <div style="font-size: 1.5rem; font-weight: bold;">Pokémon Gallery</div>
+    <div>
+      <button id="navArenaBtn" style="background: rgba(255,255,255,0.2); border: 1px solid white; color: white; padding: 8px 16px; border-radius: 5px; margin-right: 15px; cursor: pointer;" onclick="goToArena()">Battle Arena</button>
+      <button id="navFavoritesBtn" style="background: rgba(255,255,255,0.2); border: 1px solid white; color: white; padding: 8px 16px; border-radius: 5px; margin-right: 15px; cursor: pointer;" onclick="goToFavPage()">Favorites</button>
+      <button id="navLogoutBtn" style="background: rgba(255,255,255,0.2); border: 1px solid white; color: white; padding: 8px 16px; border-radius: 5px; cursor: pointer;" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+  
+  <div class="container">
+    <div class="register-title">Pokemon Gallery</div>
+    <div id="welcomeMessage" style="font-size:1.3rem; color:#4fc3dc; font-weight:500; margin-bottom:18px;"></div>
+
+    <div class="search-group">
+      <input id="typeInput" placeholder="Search Type..." oninput="filterList('type')" onclick="toggleList('type')">
+      <ul id="typeList" class="dropdown hidden"></ul>
+    </div>
+
+    <div class="search-group">
+      <input id="abilityInput" placeholder="Search Ability..." oninput="filterList('ability')" onclick="toggleList('ability')">
+      <ul id="abilityList" class="dropdown hidden"></ul>
+    </div>
+
+    <div class="search-group">
+      <input id="idInput" placeholder="Search ID..." oninput="filterList('id')" onclick="toggleList('id')">
+      <ul id="idList" class="dropdown hidden"></ul>
+    </div>
+
+    <div style="display: flex; justify-content: center; gap: 24px; margin-bottom: 24px;">
+      <button id="searchBtn" class="search-btn" onclick="save_in_url_Nsearch()">Search</button>
+    </div>
+  </div>
+
+  <div id="resultsContainer" class="results-container" style="margin-top: 30px;"></div>
+
+  <script>
+    // Initialize authentication and set welcome message
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = await initAuth();
+      if (user) {
+        document.getElementById('welcomeMessage').textContent = `Welcome, ${user.name}! Ready to explore and catch your favorite Pokémons?`;
+      }
+    });
+  </script>
+</body>
+</html>

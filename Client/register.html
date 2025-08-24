@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register - Pokemon Gallery</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav style="background: linear-gradient(90deg,#ff5e5e 0%,#4fc3dc 100%); padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center;">
+    <div style="font-size: 1.5rem; font-weight: bold;">Pokémon Gallery</div>
+    <div>
+      <a href="login.html" style="background: rgba(255,255,255,0.2); border: 1px solid white; color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none; cursor: pointer;">Login</a>
+    </div>
+  </nav>
+  
+  <div class="container">
+  <div class="register-title">Register</div>
+  <div id="successMsg" style="display:none;"></div>
+  <form id="registerForm" class="register-form">
+      <div class="search-group">
+  <label for="name">Name</label>
+  <input type="text" id="name" name="name" required>
+  <div class="explanation">1-50 letters, no digits or special symbols</div>
+      </div>
+      <div class="search-group">
+  <label for="email">Email</label>
+  <input type="email" id="email" name="email" required>
+      </div>
+      <div class="search-group">
+  <label for="password">Password</label>
+  <input type="password" id="password" name="password" required>
+  <div class="explanation">7-15 characters<br>At least one uppercase, one lowercase English letter, one symbol and one number</div>
+      </div>
+      <div class="search-group">
+  <label for="passwordConfirm">Repeat Password</label>
+  <input type="password" id="passwordConfirm" name="passwordConfirm" required>
+  <div class="explanation">Must match the password above</div>
+      </div>
+      <div id="errorMsg" class="error-msg" style="display:none;"></div>
+        <button type="submit" class="add-btn" style="width:100%;margin-top:10px;margin-bottom:20px;">Sign Up</button>
+    </form>
+  </div>
+  <script src="register.js"></script>
+</body>
+</html>

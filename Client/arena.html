@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Battle Arena - Pokemon Project</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="arena.css">
+</head>
+<body>
+  <script src="auth.js"></script>
+  <script src="arena.js"></script>
+  
+  <!-- Navigation Bar -->
+  <nav style="background: linear-gradient(90deg,#ff5e5e 0%,#4fc3dc 100%); padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center;">
+    <div style="font-size: 1.5rem; font-weight: bold;">⚔️ Battle Arena</div>
+    <div>
+      <button id="navGalleryBtn" style="background: rgba(255,255,255,0.2); border: 1px solid white; color: white; padding: 8px 16px; border-radius: 5px; margin-right: 15px; cursor: pointer;" onclick="goToGallery()">Gallery</button>
+      <button id="navFavoritesBtn" style="background: rgba(255,255,255,0.2); border: 1px solid white; color: white; padding: 8px 16px; border-radius: 5px; margin-right: 15px; cursor: pointer;" onclick="goToFavPage()">Favorites</button>
+      <button id="navLogoutBtn" style="background: rgba(255,255,255,0.2); border: 1px solid white; color: white; padding: 8px 16px; border-radius: 5px; cursor: pointer;" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+  
+  <div class="container">
+    <div id="welcomeMessage" style="font-size:1.3rem; color:#4fc3dc; font-weight:500; margin-bottom:18px;"></div>
+    
+    <div class="arena-container">
+      <h1 class="arena-title">⚔️ Battle Arena</h1>
+      <p class="arena-subtitle">Choose your battle mode and prove your Pokemon's strength!</p>
+      
+      <div class="action-buttons">
+        <button class="arena-btn battle-bot-btn" onclick="battleAgainstBot()">
+          <span class="btn-icon">🤖</span>
+          <span class="btn-text">Battle against Bot</span>
+        </button>
+        
+        <button class="arena-btn random-vs-btn" onclick="randomVsPlayer()">
+          <span class="btn-icon">🎯</span>
+          <span class="btn-text">Random Battle against another Player</span>
+        </button>
+        
+        <button class="arena-btn battle-history-btn" onclick="viewBattleHistory()">
+          <span class="btn-icon">📜</span>
+          <span class="btn-text">View Battle History</span>
+        </button>
+        
+        <button class="arena-btn player-ranking-btn" onclick="viewPlayerRanking()">
+          <span class="btn-icon">🏆</span>
+          <span class="btn-text">Player Ranking</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize authentication and set welcome message
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = await initAuth();
+      if (user) {
+        document.getElementById('welcomeMessage').textContent = `Welcome to the Arena, ${user.name}! Ready to battle?`;
+      }
+    });
+  </script>
+</body>
+</html>
