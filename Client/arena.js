@@ -74,10 +74,10 @@ async function startBotBattle(battleId) {
     // Start battle countdown
     showCountdown();
     
-    // After countdown, show battle result (5 seconds total as per specs)
+    // After epic battle animations, show battle result (8 seconds total for full animation sequence)
     setTimeout(async () => {
       await showBotBattleResult(battleId);
-    }, 5000);
+    }, 8000);
     
   } catch (error) {
     console.error('Error starting bot battle countdown:', error);
@@ -361,10 +361,10 @@ async function startBattleAnimation(battleId) {
     // Show countdown
     showCountdown();
     
-         // After countdown, show battle result (5 seconds total as per Hebrew specs)
-     setTimeout(async () => {
-       await showBattleResult(battleId);
-     }, 5000);
+                   // After epic battle animations, show battle result (8 seconds total for full animation sequence)
+      setTimeout(async () => {
+        await showBattleResult(battleId);
+      }, 8000);
     
   } catch (error) {
     console.error('Error in battle animation:', error);
@@ -392,8 +392,166 @@ function showCountdown() {
     } else {
       clearInterval(countdownInterval);
       countdownDiv.remove();
+      // Start epic battle animations after countdown!
+      startEpicBattleAnimations();
     }
   }, 1000);
+}
+
+// Epic battle animations sequence
+function startEpicBattleAnimations() {
+  console.log('🎬 Starting epic battle animations!');
+  
+  // Phase 1: Power-up effects
+  showPowerUpEffects();
+  
+  // Phase 2: Attack animations (after power-up)
+  setTimeout(() => {
+    showAttackAnimations();
+  }, 2000);
+  
+  // Phase 3: Impact effects (after attacks)
+  setTimeout(() => {
+    showImpactEffects();
+  }, 4000);
+  
+  // Phase 4: Victory celebration (after impact)
+  setTimeout(() => {
+    showVictoryCelebration();
+  }, 6000);
+}
+
+// Phase 1: Power-up effects for both Pokemon
+function showPowerUpEffects() {
+  console.log('💪 Phase 1: Power-up effects');
+  
+  // Create power-up overlay
+  const powerUpDiv = document.createElement('div');
+  powerUpDiv.className = 'battle-animation-overlay power-up-phase';
+  powerUpDiv.innerHTML = `
+    <div class="power-up-content">
+      <div class="power-up-text">POWERING UP!</div>
+      <div class="energy-rings">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+      </div>
+      <div class="pokemon-auras">
+        <div class="aura aura-left">🔥</div>
+        <div class="aura aura-right">⚡</div>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(powerUpDiv);
+  
+  // Remove after animation completes
+  setTimeout(() => {
+    if (powerUpDiv.parentNode) {
+      powerUpDiv.remove();
+    }
+  }, 2000);
+}
+
+// Phase 2: Attack animations with energy beams
+function showAttackAnimations() {
+  console.log('⚔️ Phase 2: Attack animations');
+  
+  const attackDiv = document.createElement('div');
+  attackDiv.className = 'battle-animation-overlay attack-phase';
+  attackDiv.innerHTML = `
+    <div class="attack-content">
+      <div class="attack-text">ATTACK!</div>
+      <div class="energy-beam beam-left"></div>
+      <div class="energy-beam beam-right"></div>
+      <div class="particle-effects">
+        <div class="particle particle-1">✨</div>
+        <div class="particle particle-2">💫</div>
+        <div class="particle particle-3">⭐</div>
+        <div class="particle particle-4">🌟</div>
+        <div class="particle particle-5">💥</div>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(attackDiv);
+  
+  // Remove after animation completes
+  setTimeout(() => {
+    if (attackDiv.parentNode) {
+      attackDiv.remove();
+    }
+  }, 2000);
+}
+
+// Phase 3: Impact effects when attacks hit
+function showImpactEffects() {
+  console.log('💥 Phase 3: Impact effects');
+  
+  const impactDiv = document.createElement('div');
+  impactDiv.className = 'battle-animation-overlay impact-phase';
+  impactDiv.innerHTML = `
+    <div class="impact-content">
+      <div class="impact-text">IMPACT!</div>
+      <div class="explosion">
+        <div class="explosion-core">💥</div>
+        <div class="explosion-ring ring-1"></div>
+        <div class="explosion-ring ring-2"></div>
+        <div class="explosion-ring ring-3"></div>
+      </div>
+      <div class="screen-shake"></div>
+      <div class="impact-particles">
+        <div class="impact-particle">💢</div>
+        <div class="impact-particle">⚡</div>
+        <div class="impact-particle">🔥</div>
+        <div class="impact-particle">💫</div>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(impactDiv);
+  
+  // Remove after animation completes
+  setTimeout(() => {
+    if (impactDiv.parentNode) {
+      impactDiv.remove();
+    }
+  }, 2000);
+}
+
+// Phase 4: Victory celebration
+function showVictoryCelebration() {
+  console.log('🏆 Phase 4: Victory celebration');
+  
+  const celebrationDiv = document.createElement('div');
+  celebrationDiv.className = 'battle-animation-overlay celebration-phase';
+  celebrationDiv.innerHTML = `
+    <div class="celebration-content">
+      <div class="celebration-text">BATTLE COMPLETE!</div>
+      <div class="confetti-container">
+        <div class="confetti confetti-1">🎉</div>
+        <div class="confetti confetti-2">🎊</div>
+        <div class="confetti confetti-3">🏆</div>
+        <div class="confetti confetti-4">👑</div>
+        <div class="confetti confetti-5">⭐</div>
+        <div class="confetti confetti-6">💎</div>
+      </div>
+      <div class="victory-sparkles">
+        <div class="sparkle sparkle-1">✨</div>
+        <div class="sparkle sparkle-2">💫</div>
+        <div class="sparkle sparkle-3">🌟</div>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(celebrationDiv);
+  
+  // Remove after animation completes
+  setTimeout(() => {
+    if (celebrationDiv.parentNode) {
+      celebrationDiv.remove();
+    }
+  }, 2000);
 }
 
 // Show battle result
