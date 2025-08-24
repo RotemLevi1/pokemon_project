@@ -244,14 +244,26 @@ router.post('/:username/addFavorite', (req, res) => {
 router.delete('/:username/removeFavorite', (req, res) => {
   const user = users[req.params.username];
   const pokemonName = req.query.pokemonName;
+  
+  console.log(`🗑️ Remove favorite request: user=${req.params.username}, pokemon=${pokemonName}`);
+  console.log(`🗑️ User favorites keys:`, Object.keys(user?.favorites || {}));
+  
   if (user && typeof user.favorites === 'object' && !Array.isArray(user.favorites)) {
-    if (user.favorites[pokemonName]) {
-      delete user.favorites[pokemonName];
+    // Case-insensitive search for Pokemon name
+    const pokemonKey = Object.keys(user.favorites).find(key => 
+      key.toLowerCase() === pokemonName.toLowerCase()
+    );
+    
+    if (pokemonKey) {
+      console.log(`🗑️ Found Pokemon with key: ${pokemonKey}, removing...`);
+      delete user.favorites[pokemonKey];
       res.json({ success: true, favoritePokemons: user.favorites });
     } else {
-      res.json({ success: false, message: 'Pokemon not found in favorites.' });
+      console.log(`🗑️ Pokemon not found in favorites: ${pokemonName}`);
+      res.json({ success: false, message: `Pokemon '${pokemonName}' not found in favorites.` });
     }
   } else {
+    console.log(`🗑️ User not found or invalid favorites structure`);
     res.status(404).json({ error: 'User not found' });
   }
 });

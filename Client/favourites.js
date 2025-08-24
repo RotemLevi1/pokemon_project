@@ -109,6 +109,8 @@ function createPokemonCard(pokemon, user) {
 
 async function removeFromFavorites(name) {
   try {
+    console.log(`🗑️ Client: Attempting to remove Pokemon: ${name}`);
+    
     // Get authenticated user from session
     const authRes = await fetch('/auth/status');
     if (!authRes.ok) {
@@ -122,12 +124,17 @@ async function removeFromFavorites(name) {
     }
     
     const user = authData.user.name;
+    console.log(`🗑️ Client: User: ${user}, Pokemon: ${name}`);
+    
     fetch(`/${user}/removeFavorite?pokemonName=${encodeURIComponent(name)}`, {
       method: 'DELETE'
     })
     .then(res => res.json())
     .then(data => {
+      console.log(`🗑️ Client: Server response:`, data);
+      
       if (data.success) {
+        console.log(`🗑️ Client: Successfully removed Pokemon: ${name}`);
         // Remove the Pokémon card from the UI
         const container = document.getElementById('resultsContainer');
         const card = Array.from(container.getElementsByClassName('pokemon-card'))
@@ -142,7 +149,10 @@ async function removeFromFavorites(name) {
           document.getElementById('resultsContainer').innerHTML = '<div style="color:#ff5e5e; font-size:1.2rem; font-weight:600; margin-top:2rem;">No favourites selected yet.</div>';
         }
       } else {
-        alert('Error removing favorite.');
+        // Show specific error message from server if available
+        const errorMessage = data.message || 'Error removing favorite.';
+        console.log(`🗑️ Client: Error removing favorite: ${errorMessage}`);
+        alert(errorMessage);
       }
     })
     .catch(err => {
