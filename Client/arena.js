@@ -2,11 +2,15 @@
 
 // Navigation functions
 function goToGallery() {
-  window.location.href = 'search.html';
+  // Preserve search parameters when going back to gallery
+  const currentSearch = window.location.search;
+  window.location.href = 'search.html' + currentSearch;
 }
 
 function goToFavPage() {
-  window.location.href = 'favorites.html';
+  // Preserve search parameters when going to favorites page
+  const currentSearch = window.location.search;
+  window.location.href = 'favorites.html' + currentSearch;
 }
 
 // Battle against Bot

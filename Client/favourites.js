@@ -158,8 +158,9 @@ async function removeFromFavorites(name) {
 
 
 function backButton() {
-  // Just go back to search page - authentication will be handled by auth.js
-  window.location.href = 'search.html';
+  // Preserve search parameters when going back to search page
+  const currentSearch = window.location.search;
+  window.location.href = 'search.html' + currentSearch;
 }
 
 function goToArena() {

@@ -121,13 +121,19 @@ function populateList(category, data) {
       const ability = params.get('ability') || '';
       const id = params.get('id') || '';
 
+      console.log('🔍 LoadPreviousSearch - URL params:', { type, ability, id });
+      console.log('🔍 LoadPreviousSearch - Full URL:', window.location.href);
+
       document.getElementById('typeInput').value = type;
       document.getElementById('abilityInput').value = ability;
       document.getElementById('idInput').value = id;
 
       // If any input is present, show search results
       if (type || ability || id) {
+        console.log('🔍 LoadPreviousSearch - Triggering search with params');
         await search_Npresent();
+      } else {
+        console.log('🔍 LoadPreviousSearch - No search params found');
       }
 
     } catch (err) {
@@ -185,28 +191,34 @@ async function search_Npresent() {
   const ability = params.get('ability');
   const id = params.get('id');
 
+  console.log('🔍 search_Npresent - URL params:', { type, ability, id });
+  console.log('🔍 search_Npresent - Full URL:', window.location.href);
+
   // If no input, do nothing
   if (!type && !ability && !id) {
+    console.log('🔍 search_Npresent - No search params, showing error');
     showError(document.getElementById('resultsContainer'));
     loadingDiv.remove();
     return;
   }
 
-  
-  
   try {
     // getting al the needed information from the server
     if(!isValidElement(id, type, ability)){
       removeLoading();
       showError(document.getElementById('resultsContainer'));
-      console.error('Error fetching pokemons:', error);
       return;
     }
-    const response = await fetch(`/${id}/${type}/${ability}`);
+    // Convert "null" strings to actual null for the API
+    const apiId = id === "null" ? "null" : id;
+    const apiType = type === "null" ? "null" : type;
+    const apiAbility = ability === "null" ? "null" : ability;
+    
+    const response = await fetch(`/${apiId}/${apiType}/${apiAbility}`);
     if (!response.ok) {
       removeLoading();
       showError(document.getElementById('resultsContainer'));
-      console.error('Error fetching pokemons:', error);
+      console.error('Error fetching pokemons:', response.status, response.statusText);
       return;
     }
     const allPokemons = await response.json();
@@ -389,13 +401,15 @@ async function addToFavorites(pokemon) {
 }
 
 function goToFavPage(){
-  // Just go to favorites page - authentication will be handled by auth.js
-  window.location.href = 'favorites.html';
+  // Preserve search parameters when going to favorites page
+  const currentSearch = window.location.search;
+  window.location.href = 'favorites.html' + currentSearch;
 };
 
 function goToArena(){
-  // Navigate to the battle arena page
-  window.location.href = 'arena.html';
+  // Preserve search parameters when going to arena page
+  const currentSearch = window.location.search;
+  window.location.href = 'arena.html' + currentSearch;
 };
 
 function addToFavoritesByIndex(index) {
