@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node Server/serverCalls/app.js",
-    "dev": "cd Server/serverCalls && npm run dev"
+    "dev": "cd Server/serverCalls && npm run dev",
+    "vercel-build": "cd Server/serverCalls && npm install"
   },
   "repository": {
     "type": "git",
@@ -23,10 +24,6 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "body-parser": "^2.2.0",
-    "express": "^5.1.0",
-    "express-session": "^1.18.2",
-    "dotenv": "^17.2.1",
-    "node-fetch": "^2.7.0"
+    "dotenv": "^17.2.1"
   }
-  }
+}
